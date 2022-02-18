@@ -1,5 +1,34 @@
-<h1>Helló!</h1>
+{% extends "base.html" %}
+{% load static %}
 
-{% for post in last_two_post %}
-<h2>{{post}}</h2>
-{% endfor %}
+{% block title %}
+My Blog
+{% endblock title %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/index.css" %}">
+<link rel="stylesheet" href="{% static "blog/post.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+<section id="welcome">
+    <header>
+        <img src="{% static "/blog/images/MJ_profil_02.jpg" %}" alt="Jocc - The Author Of This Blog">
+        <h2>JOCC'S BLOG</h2>
+    </header>
+    <p>Hi, I am Jocc and I love to blog about..</p>
+</section>
+<section id="latest-posts">
+    <h2>My Latest Thoughts</h2>
+    <ul>
+        {% for post in  posts %}
+            {% include "blog/includes/post.html" %}
+        {% endfor %}
+    </ul>
+</section>
+<section id="about">
+    <h2>What I Do</h2>
+    <p>Love to programming and...</p>
+    <p>My goal is keep on growing...</p>
+</section>
+{% endblock content %}
