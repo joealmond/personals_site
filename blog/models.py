@@ -1,6 +1,8 @@
 from email.mime import image
 from django.db import models
-from django.utils import timezone
+from django.core.validators import MinLengthValidator
+from django.db.models import Model
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -23,12 +25,13 @@ class Author(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=80)
-    excerpt = models.CharField(max_length=500)
+    excerpt = models.CharField(max_length=250)
     image_name = models.CharField(max_length=80)
-    created_date = models.DateField(default=timezone.now)
-    slug = models.SlugField(default="", null=False, db_index=True)
-    content = models.TextField()
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    created_date = models.DateField(auto_now=True)
+    slug = models.SlugField(unique=True, default="", null=False)
+    content = RichTextField(validators=[MinLengthValidator(10)])
+    author = models.ForeignKey(
+        Author, on_delete=models.SET_NULL, related_name="posts", null=True)
     tag = models.ManyToManyField(Tag)
 
     def __str__(self):
